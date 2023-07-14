@@ -1,6 +1,9 @@
 {
     "name": "iris/test",
     "description": "Iris Test",
+    "type": "project",
+    "keywords": ["php", "pest"],
+    "license": "MIT",
     "require-dev": {
         "pestphp/pest": "^2.8"
     },
