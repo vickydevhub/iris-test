@@ -12,17 +12,27 @@ class Helper
      * @param mixed $columnLetter
      * @return int
      */
-    public static function letterToNumber($columnLetter): int
+    public static function letterToNumber(string $columnLetter): int
     { 
-        $columnNumber = 0;
-        $length = strlen($columnLetter);
+        try {
+            //check if string contain space
+            if (strpos($columnLetter, ' ') !== false) return -1;
 
-        for ($i = 0; $i < $length; $i++) {
-            $char = $columnLetter[$i];
-            $columnNumber = $columnNumber * 26 + (ord($char) - ord('A') + 1);
+            $columnNumber   = 0;
+            //convert lowercase to uppercase
+            $columnLetter = strtoupper($columnLetter);
+            $length = strlen($columnLetter);
+
+            for ($i = 0; $i < $length; $i++) {
+                $char = $columnLetter[$i];
+                $columnNumber = $columnNumber * 26 + (ord($char) - ord('A') + 1);
+            }
+
+            return $columnNumber;
+        } catch (\Throwable $th) {
+            return $th->getCode();
         }
-
-        return $columnNumber;
+        
     }
 
     /**
@@ -33,19 +43,27 @@ class Helper
      * @param mixed $columnNumber
      * @return string
      */
-    public static function numberToLetter($columnNumber): string
+    public static function numberToLetter(int $columnNumber): string
     {
-        $columnNumber = intval($columnNumber);
-        if ($columnNumber <= 0) return '';
+        try {
+            $columnNumber = intval($columnNumber);
+            if ($columnNumber <= 0) return '';
 
-        $columnLetter = '';
-    
-        while ($columnNumber > 0) {
-            $remainder = ($columnNumber - 1) % 26;
-            $columnLetter = chr(65 + $remainder) . $columnLetter;
-            $columnNumber = floor(($columnNumber - $remainder) / 26);
+            $columnLetter = '';
+        
+            while ($columnNumber > 0) {
+                
+                $remainder = ($columnNumber - 1) % 26;
+                
+                $columnLetter = chr(ord('A') + $remainder) . $columnLetter;
+                $columnNumber = floor(($columnNumber - $remainder) / 26);
+              
+            }
+        
+            return $columnLetter;
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
-    
-        return $columnLetter;
+        
     }
 }
